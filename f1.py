@@ -46,11 +46,13 @@ def play_music() :
         try:
             mixer.music.load(filename)
             mixer.music.play()
+            statusbar['text']="Music is playing"
         except:
             tkinter.messagebox.showerror('File Error','File Not Found')
             
     else:
         mixer.music.unpause()
+        statusbar['text']="Music is resumed"
 
 '''def stop_music() :
      mixer.music.stop ()'''
@@ -63,24 +65,43 @@ def pause_music():
 
     global paused
     paused=True
-    mixer.music.pause()    
-    
+    mixer.music.pause() 
+    statusbar['text']="Music is paused"
+
+def rewind_music():
+    mixer.music.rewind()
+    statusbar['text']="Music is shuffled"
+
+frame = Frame(window)
+frame.pack(padx=10,pady=10)    
+
 #photo = PhotoImage(file='p1.png')
 
 '''photoLabel = Label(window,image=photo,height=200,width=150)
 photoLabel.pack()'''
 
-playButton = Button(text='play',width=5,height=2,command=play_music,activebackground="lightgreen",cursor='hand2')
-playButton.pack(pady=10)
+playButton = Button(frame,text='play',width=5,height=2,command=play_music,activebackground="lightgreen",cursor='hand2')
+playButton.pack(padx=10,pady=10,side=LEFT)
 
 #b=Button(text='Pause',width=5,height=2,bg='green',fg='white',activebackground='red',activeforeground='blue',cursor = 'hand2',command=stop_music).pack()
 
-pausebtn =Button(text='Pause',width=5,height=2,bg='green',fg='white',activebackground='red',activeforeground='blue',cursor = 'hand2',command=pause_music).pack()
+pausebtn =Button(frame,text='Pause',width=5,height=2,bg='green',fg='white',activebackground='red',activeforeground='blue',cursor = 'hand2',command=pause_music)
+pausebtn.pack(padx=10,pady=10,side=LEFT)
 
-scale = Scale (window,from_=0,to=100,orient=HORIZONTAL,command=set_volume)
+bottomframe = Frame(window)
+bottomframe.pack(padx=10,pady=10)
+
+rewindButton = Button(frame,text='Shuffle',width=5,height=2,bg='pink',fg='white',activebackground='blue',activeforeground='orange',cursor = 'hand2',command=rewind_music)
+rewindButton.pack(padx=10,pady=10,side=LEFT)
+
+scale = Scale(bottomframe,from_=0,to=100,orient=HORIZONTAL,command=set_volume)
 scale.set(50)
 scale.pack()
+
 l = Label(text='Volume').pack()
+
+statusbar = Label(window,text="Keep enjoing music",relief=SUNKEN,anchor=W)
+statusbar.pack(side=BOTTOM,fill=X)
 
 window.mainloop()
 
